@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#EAF3F2" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0B1517" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="SoraChat, pesan pribadi secara realtime">
+  <title>SoraChat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main id="auth-screen" class="auth-screen">
+    <aside class="auth-aside">
+      <div class="wordmark">SoraChat</div>
+      <p class="aside-quote">Percakapan yang tenang, tanpa gangguan.</p>
+      <p class="aside-note">Pesan pribadi realtime untuk teman dan tim kecil.</p>
+    </aside>
+    <section class="auth-card">
+      <div class="wordmark mobile-only">SoraChat</div>
+      <h1>Selamat datang</h1>
+      <p class="auth-subtitle">Masuk atau buat akun untuk melanjutkan.</p>
+      <div class="auth-tabs" role="tablist">
+        <button class="auth-tab active" data-auth-tab="login" type="button">Masuk</button>
+        <button class="auth-tab" data-auth-tab="register" type="button">Buat akun</button>
+      </div>
+      <form id="auth-form" autocomplete="on">
+        <label id="name-field" class="field hidden">Nama tampilan<input id="auth-name" maxlength="40" autocomplete="name" placeholder="Nama kamu"></label>
+        <label class="field">Email<input id="auth-email" type="email" required autocomplete="email" placeholder="nama@email.com"></label>
+        <label class="field">Password<input id="auth-password" type="password" minlength="6" required autocomplete="current-password" placeholder="Minimal 6 karakter"></label>
+        <p id="auth-error" class="form-error" role="alert"></p>
+        <button id="auth-submit" class="primary-btn" type="submit">Masuk</button>
+      </form>
+      <p class="tiny-note">Dengan melanjutkan, kamu setuju menggunakan layanan ini secara bertanggung jawab.</p>
+    </section>
+  </main>
+
+  <main id="app-screen" class="app-shell hidden">
+    <aside class="sidebar" id="sidebar">
+      <header class="side-header">
+        <div>
+          <div class="wordmark">SoraChat</div>
+          <h2 class="side-title" id="side-title">Pesan</h2>
+        </div>
+        <button id="logout-btn" class="icon-btn logout-btn" type="button" aria-label="Keluar dari akun" title="Keluar">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3"/><path d="M16 8l4 4-4 4M20 12H9"/></svg>
+        </button>
+      </header>
+      <label class="search-box">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+        <input id="user-search" type="search" placeholder="Cari chat atau pengguna" autocomplete="off">
+      </label>
+      <div class="profile-strip">
+        <div id="my-avatar" class="avatar avatar-self">S</div>
+        <div class="profile-copy"><strong id="my-name">Pengguna</strong><small><i class="online-dot"></i>Aktif</small></div>
+        <button id="edit-profile-btn" class="icon-btn" type="button" title="Edit profil" aria-label="Edit profil">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>
+        </button>
+      </div>
+      <div id="contact-list" class="contact-list"><div class="empty-state">Memuat pengguna...</div></div>
+      <nav class="bottom-nav" aria-label="Navigasi utama">
+        <button class="mobile-tab active" type="button" data-view="chats" aria-label="Chat">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H9l-4 3v-3H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/><path d="M17 9h3a1 1 0 0 1 1 1v7l-3-2h-5"/></svg>
+        </button>
+        <button class="mobile-tab" type="button" data-view="contacts" aria-label="Kontak">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16 5.2a3 3 0 0 1 0 5.6M18 14a5 5 0 0 1 2.5 5"/></svg>
+        </button>
+        <button class="mobile-tab" type="button" data-view="settings" aria-label="Profil">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
+        </button>
+      </nav>
+    </aside>
+
+    <section id="chat-panel" class="chat-panel">
+      <header id="chat-header" class="chat-header hidden">
+        <button id="back-btn" class="icon-btn back-btn" aria-label="Kembali ke daftar chat">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <div id="chat-avatar" class="avatar">?</div>
+        <div class="chat-head-copy"><strong id="chat-name">Pilih percakapan</strong><small id="chat-status">Pilih pengguna untuk mulai chat</small></div>
+      </header>
+      <div id="welcome-panel" class="welcome-panel">
+        <h2>Pilih percakapan</h2>
+        <p>Pilih seseorang dari daftar di samping untuk mulai mengobrol.</p>
+      </div>
+      <div id="messages" class="messages hidden" aria-live="polite"></div>
+      <div id="typing-line" class="typing-line hidden"><span class="typing-dots"><i></i><i></i><i></i></span><span id="typing-label">sedang mengetik</span></div>
+      <form id="composer" class="composer hidden">
+        <input id="file-input" type="file" hidden>
+        <button id="attach-btn" class="composer-icon" type="button" title="Lampirkan file" aria-label="Lampirkan file">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <textarea id="message-input" rows="1" maxlength="5000" placeholder="Ketik pesan" aria-label="Tulis pesan"></textarea>
+        <button id="send-btn" class="send-btn" type="submit" aria-label="Kirim pesan">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5.5 11.5L12 5l6.5 6.5"/></svg>
+        </button>
+      </form>
+      <div id="upload-progress" class="upload-progress hidden"><span></span></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status"></div>
+  <div id="modal-backdrop" class="modal-backdrop hidden">
+    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button id="modal-close" class="modal-close" aria-label="Tutup">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <h2 id="modal-title">Edit profil</h2>
+      <div class="profile-photo-settings">
+        <div id="profile-photo-preview" class="avatar avatar-preview">N</div>
+        <div class="photo-actions">
+          <strong>Foto profil</strong>
+          <small>JPG, PNG, atau WebP, maksimal 2 MB</small>
+          <label class="secondary-btn photo-pick" for="profile-photo-input">Pilih foto</label>
+          <input id="profile-photo-input" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+          <button id="remove-profile-photo-btn" class="text-btn" type="button">Hapus foto</button>
+        </div>
+      </div>
+      <label class="field">Nama tampilan<input id="profile-name-input" maxlength="40" placeholder="Nama kamu"></label>
+      <p class="modal-help">Foto akan dikompres sebelum disimpan ke profil akun.</p>
+      <button id="save-profile-btn" class="primary-btn">Simpan perubahan</button>
+    </section>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="./firebase-config.js"></script>
+  <script src="./app.js"></script>
+  <script>
+    (() => {
+      const tabs = [...document.querySelectorAll('.mobile-tab')];
+      const list = document.getElementById('contact-list');
+      const title = document.getElementById('side-title');
+      const input = document.getElementById('user-search');
+      const edit = document.getElementById('edit-profile-btn');
+      tabs.forEach(tab => tab.addEventListener('click', () => {
+        const view = tab.dataset.view;
+        if (view === 'settings') { if (edit) edit.click(); return; }
+        tabs.forEach(item => item.classList.toggle('active', item === tab));
+        if (list) list.dataset.view = view;
+        if (title) title.textContent = view === 'contacts' ? 'Kontak' : 'Pesan';
+        if (input) input.placeholder = view === 'chats' ? 'Cari chat atau pengguna' : 'Cari nama atau email';
+      }));
+    })();
+  </script>
+</body>
+</html>
+          
