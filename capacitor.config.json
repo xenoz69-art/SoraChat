@@ -1,0 +1,9 @@
+{
+  "appId": "com.sorachat.app",
+  "appName": "SoraChat",
+  "webDir": "www",
+  "backgroundColor": "#0A1214",
+  "android": {
+    "allowMixedContent": false
+  }
+}
